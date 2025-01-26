@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EŞCİNSEL Kiralama Sitesi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        header {
+            background-color: #ff4d6d;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 300px;
+            padding: 15px;
+            text-align: center;
+        }
+        .card img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .card h3 {
+            color: #333;
+        }
+        .card p {
+            color: #777;
+            font-size: 14px;
+        }
+        .card button {
+            background-color: #ff4d6d;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .card button:hover {
+            background-color: #e03a57;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+        .modal-content input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 90%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .modal-content button {
+            margin-top: 10px;
+        }
+        #details {
+            display: none;
+            padding: 20px;
+            text-align: center;
+        }
+        #details h2 {
+            color: #ff4d6d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Eşcinsel Kiralama Sitesi</h1>
+        <p>Hayalinizdeki partnerle tanışın!</p>
+    </header>
+    <div class="container" id="main-content">
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200" alt="">
+            <h3>Melis</h3>
+            <p>26 yaşında, İstanbul'da yaşıyor. Eğlenceli ve pozitif!</p>
+            <button onclick="showModal('Melis')">Kirala</button>
+        </div>
+
+        <div class="card">
+            <img src="https://via.placeholder.com/300x200" alt="">
+            <h3>Şaban Ayçiçeği</h3>
+            <p>19 yaşında, İzmir'de yaşıyor. Doğa yürüyüşlerini seviyor!</p>
+            <button onclick="showModal('Şaban Ayçiçeği')">Kirala</button>
+        </div>
+    </div>
+
+    <div class="modal" id="kiralamaModal">
+        <div class="modal-content">
+            <h3 id="modal-title"></h3>
+            <div id="step1">
+                <label for="rental-date">Tarih Seçin:</label>
+                <input type="date" id="rental-date">
+                <button onclick="nextStep()">Devam</button>
+            </div>
+            <div id="step2" style="display: none;">
+                <label for="rental-time">Saat Seçin:</label>
+                <input type="time" id="rental-time">
+                <button onclick="confirmRental()">Onayla</button>
+                <button onclick="closeModal()">İptal</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="details">
+        <h2 id="person-name"></h2>
+        <p id="person-info"></p>
+        <p id="reservation-time"></p>
+        <p id="contact-number"></p>
+        <button onclick="backToMain()">Ana Sayfaya Dön</button>
+    </div>
+
+    <script>
+        let selectedPerson = '';
+
+        function showModal(personName) {
+            selectedPerson = personName;
+            document.getElementById('modal-title').innerText = personName + " için kiralama";
+            document.getElementById('kiralamaModal').style.display = 'flex';
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('step2').style.display = 'none';
+        }
+
+        function closeModal() {
+            document.getElementById('kiralamaModal').style.display = 'none';
+        }
+
+        function nextStep() {
+            const dateInput = document.getElementById('rental-date').value;
+            if (dateInput) {
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
+            } else {
+                alert("Lütfen bir tarih seçin.");
+            }
+        }
+
+        function confirmRental() {
+            const dateInput = document.getElementById('rental-date').value;
+            const timeInput = document.getElementById('rental-time').value;
+            if (timeInput) {
+                document.getElementById('kiralamaModal').style.display = 'none';
+                showDetails(selectedPerson, dateInput, timeInput);
+            } else {
+                alert("Lütfen bir saat seçin.");
+            }
+        }
+
+        function showDetails(personName, date, time) {
+            const info = {
+                "Melis": "Eğlenceli ve pozitif bir İstanbul hanımefendisi. Hobileri arasında dans ve yemek yapmak var.",
+                "Şaban Ayçiçeği": "Ben şaban 19 Yaşındayım çok fena azdım beni götten sikermisin❤️‍🔥."
+            };
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('details').style.display = 'block';
+
+            document.getElementById('person-name').innerText = personName;
+            document.getElementById('person-info').innerText = info[personName];
+            document.getElementById('reservation-time').innerText = `SİKİŞ Tarihi ve Saati: ${date} ${time}`;
+            document.getElementById('contact-number').innerText = `Telefon Numarası: +90 539 894 22 53 Beni ara👅`;
+        }
+
+        function backToMain() {
+            document.getElementById('details').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
